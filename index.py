@@ -22,18 +22,30 @@ class MainApp(QMainWindow, ui):
 
     def initUI(self):
         # contain all ui change in loading
-        self.lineEdit_6.setText(str(os.path.join(os.path.expanduser('~'), 'Downloads')))
-        pass
+        if os.name == 'nt':
+            pass
+        else:
+            self.lineEdit_6.setText(str(os.path.join(os.path.expanduser('~'), 'Downloads')))                    
+        self.tabWidget.tabBar().setVisible(False)        
 
     def handleButtons(self):
         # handle all buttons in the app
         self.pushButton.clicked.connect(self.handleDownload)
         self.pushButton_2.clicked.connect(self.handleBrowse)
         self.pushButton_3.clicked.connect(self.getVideoData)
-        self.pushButton_4.clicked.connect(self.saveBrowse)
+        self.pushButton_4.clicked.connect(self.saveBrowse)        
         self.pushButton_5.clicked.connect(self.downloadVideo)
         self.pushButton_6.clicked.connect(self.playlistSaveBrowse)        
         self.pushButton_7.clicked.connect(self.playlistDownlaod)
+
+        self.pushButton_8.clicked.connect(self.openHome)        
+        self.pushButton_9.clicked.connect(self.openDownload)        
+        self.pushButton_10.clicked.connect(self.openYoutube)        
+        self.pushButton_11.clicked.connect(self.openSettings)
+        self.pushButton_12.clicked.connect(self.applyBlueTheme)        
+        self.pushButton_13.clicked.connect(self.applyQDarkTheme)        
+        self.pushButton_14.clicked.connect(self.applyDarkOrangeTheme)                
+
 
     def handleProgress(self, blocknum, blocksize, totalsize):
         # calculate the progress
@@ -102,7 +114,7 @@ class MainApp(QMainWindow, ui):
         # enable browser to our os, pick save location
         save_location = QFileDialog.getSaveFileName(
             self, caption="Save as", directory=".", filter="All Files(*.*)")
-        print(save_location)
+        # print(save_location)
         self.lineEdit_4.setText(save_location[0])
 
     def downloadVideo(self):
@@ -181,6 +193,38 @@ class MainApp(QMainWindow, ui):
     ###########################################
     ### End Download Youtube Playlist Video ###
     ###########################################
+    ###########################################
+    ###         UI Changes Method           ###
+    ###########################################
+    def openHome(self):
+        self.tabWidget.setCurrentIndex(0)
+
+    def openDownload(self):
+        self.tabWidget.setCurrentIndex(1)
+
+    def openYoutube(self):
+        self.tabWidget.setCurrentIndex(2)
+
+    def openSettings(self):
+        self.tabWidget.setCurrentIndex(3)
+    
+    # Themes
+    def applyBlueTheme(self):
+        styleFile = open("themes/blue.css")
+        style = styleFile.read()
+        self.setStyleSheet(style)
+
+    def applyQDarkTheme(self):
+        styleFile = open("themes/qdark.css")
+        style = styleFile.read()
+        self.setStyleSheet(style)
+    
+    def applyDarkOrangeTheme(self):
+        styleFile = open("themes/dark_orange.css")
+        style = styleFile.read()
+        self.setStyleSheet(style)
+    
+
 def main():
     app = QApplication(sys.argv)
     window = MainApp()
