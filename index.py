@@ -8,10 +8,12 @@ import humanize
 import urllib.request
 import os
 from os import path
-
+# import mainUI as ui
 ui, _ = loadUiType('main.ui')
 
 
+
+# class MainApp(QMainWindow, ui.Ui_MainWindow):
 class MainApp(QMainWindow, ui):
     def __init__(self, parent=None):
         super(MainApp, self).__init__(parent)
@@ -81,7 +83,7 @@ class MainApp(QMainWindow, ui):
             except Exception:
                 QMessageBox.warning(self, "Download Error",
                                     "Provide a valid URL or save location")
-                return True
+                return None
         QMessageBox.information(
             self, "Download Completed", "The Download Completed Successfully")
         self.lineEdit.setText('')
@@ -92,8 +94,7 @@ class MainApp(QMainWindow, ui):
     ### Download Youtube Single Video ###
     #####################################
 
-    def getVideoData(self):
-        # https://youtu.be/Olhn7eEBnL8
+    def getVideoData(self):        
         video_url = self.lineEdit_3.text()
         if video_url == "":
             QMessageBox.warning(self, "Data Error",
@@ -108,7 +109,8 @@ class MainApp(QMainWindow, ui):
             # print(video.likes)
             # print(video.dislikes)
 
-            video_streams = video.videostreams
+            # video_streams = video.videostreams
+            video_streams = video.streams
             for stream in video_streams:
                 size = humanize.naturalsize(stream.get_filesize())
                 data = "{} {} {} {}".format(
@@ -131,12 +133,12 @@ class MainApp(QMainWindow, ui):
                                 "Provide a valid URL or save location")
         else:
             video = pafy.new(video_url)
-            video_stream = video.videostreams
-            # video_stream = video.streams
+            # video_stream = video.videostreams
+            video_stream = video.streams
             video_quality = self.comboBox.currentIndex()
             # print(video_stream)
             download = video_stream[video_quality].download(
-                filepath=save_location, callback=self.videoProgress)
+                filepath=save_location, callback=self.videoProgress)            
 
     def videoProgress(self, total, received, ratio, rate, time):
         read_data = received
