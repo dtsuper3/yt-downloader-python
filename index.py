@@ -27,6 +27,10 @@ class MainApp(QMainWindow, ui):
         else:
             self.lineEdit_6.setText(str(os.path.join(os.path.expanduser('~'), 'Downloads')))                    
         self.tabWidget.tabBar().setVisible(False)        
+        self.moveBox1()
+        self.moveBox2()
+        self.moveBox3()
+        self.moveBox4()
 
     def handleButtons(self):
         # handle all buttons in the app
@@ -45,6 +49,7 @@ class MainApp(QMainWindow, ui):
         self.pushButton_12.clicked.connect(self.applyBlueTheme)        
         self.pushButton_13.clicked.connect(self.applyQDarkTheme)        
         self.pushButton_14.clicked.connect(self.applyDarkOrangeTheme)                
+        self.pushButton_15.clicked.connect(self.resetTheme)        
 
 
     def handleProgress(self, blocknum, blocksize, totalsize):
@@ -193,8 +198,9 @@ class MainApp(QMainWindow, ui):
     ###########################################
     ### End Download Youtube Playlist Video ###
     ###########################################
+
     ###########################################
-    ###         UI Changes Method           ###
+    ###      UI Navigation Method           ###
     ###########################################
     def openHome(self):
         self.tabWidget.setCurrentIndex(0)
@@ -208,22 +214,69 @@ class MainApp(QMainWindow, ui):
     def openSettings(self):
         self.tabWidget.setCurrentIndex(3)
     
+    ###########################################
+    ###      Theme Changes Method           ###
+    ###########################################
     # Themes
-    def applyBlueTheme(self):
+    def resetTheme(self):
+        self.setStyleSheet("")
+
+    def applyBlueTheme(self):    
+        self.resetTheme()
         styleFile = open("themes/blue.css")
         style = styleFile.read()
         self.setStyleSheet(style)
 
-    def applyQDarkTheme(self):
+    def applyQDarkTheme(self):        
+        self.resetTheme()
         styleFile = open("themes/qdark.css")
         style = styleFile.read()
         self.setStyleSheet(style)
     
-    def applyDarkOrangeTheme(self):
+    def applyDarkOrangeTheme(self):        
+        self.resetTheme()
         styleFile = open("themes/dark_orange.css")
         style = styleFile.read()
         self.setStyleSheet(style)
-    
+    ###########################################
+    ###     End Theme Changes Method        ###
+    ###########################################
+
+    ###########################################
+    ###         App Animation               ###
+    ###########################################
+
+    def moveBox1(self):
+        box_animation1 = QPropertyAnimation(self.groupBox, b'geometry')
+        box_animation1.setDuration(1000)
+        box_animation1.setStartValue(QRect(0,0,0,0))
+        box_animation1.setEndValue(QRect(20,30,241,151))
+        box_animation1.start()
+        self.box_animation1 = box_animation1
+
+    def moveBox2(self):
+        box_animation2 = QPropertyAnimation(self.groupBox_2, b'geometry')
+        box_animation2.setDuration(1000)
+        box_animation2.setStartValue(QRect(0,0,0,0))
+        box_animation2.setEndValue(QRect(330,30,231,151))
+        box_animation2.start()
+        self.box_animation2 = box_animation2
+
+    def moveBox3(self):
+        box_animation3 = QPropertyAnimation(self.groupBox_3, b'geometry')
+        box_animation3.setDuration(1000)
+        box_animation3.setStartValue(QRect(0,0,0,0))
+        box_animation3.setEndValue(QRect(20,200,241,151))
+        box_animation3.start()        
+        self.box_animation3 = box_animation3
+
+    def moveBox4(self):
+        box_animation4 = QPropertyAnimation(self.groupBox_4, b'geometry')
+        box_animation4.setDuration(1000)
+        box_animation4.setStartValue(QRect(0,0,0,0))
+        box_animation4.setEndValue(QRect(330,200,241,151))
+        box_animation4.start()
+        self.box_animation4 = box_animation4
 
 def main():
     app = QApplication(sys.argv)
