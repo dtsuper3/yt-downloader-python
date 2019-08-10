@@ -94,35 +94,30 @@ class MainApp(QMainWindow, ui):
     ### Download Youtube Single Video ###
     #####################################
 
-    def getVideoData(self):        
+    def getVideoData(self,metadata):        
         video_url = self.lineEdit_3.text()
         if video_url == "":
             QMessageBox.warning(self, "Data Error",
-                                "Provide a valid video URL")
+                                "Provide a valid video URL")            
+            return False
         else:
-            video = pafy.new(video_url)
-            # print(video.title)
-            # print(video.duration)
-            # print(video.author)
-            # print(video.length)
-            # print(video.viewcount)
-            # print(video.likes)
-            # print(video.dislikes)
-
-            # video_streams = video.videostreams
-            video_streams = video.streams
-            for stream in video_streams:
-                size = humanize.naturalsize(stream.get_filesize())
-                data = "{} {} {} {}".format(
-                    stream.mediatype, stream.extension, stream.quality, size)
-                self.comboBox.addItem(data)
+            video = pafy.new(video_url)            
+            if metadata == True:                
+                return "/{}.mp4".format(video.title)
+            else:                
+                video_streams = video.streams
+                for stream in video_streams:
+                    size = humanize.naturalsize(stream.get_filesize())
+                    data = "{} {} {} {}".format(
+                        stream.mediatype, stream.extension, stream.quality, size)
+                    self.comboBox.addItem(data)            
 
     def saveBrowse(self):
-        # enable browser to our os, pick save location
-        save_location = QFileDialog.getSaveFileName(
-            self, caption="Save as", directory=".", filter="All Files(*.*)")
-        # print(save_location)
-        self.lineEdit_4.setText(save_location[0])
+        # enable browser to our os, pick save location        
+        save_location = QFileDialog.getExistingDirectory(self, "Select Download Directory")        
+        video_title = self.getVideoData(metadata=True)
+        if(video_title != False):
+            self.lineEdit_4.setText(save_location+video_title)        
 
     def downloadVideo(self):
         video_url = self.lineEdit_3.text()
@@ -179,7 +174,8 @@ class MainApp(QMainWindow, ui):
 
         for video in playlist_videos:
             current_video = video['pafy']
-            current_video_stream = current_video.videostreams
+            # current_video_stream = current_video.videostreams
+            current_video_stream = current_video.streams
             download = current_video_stream[quality].download(callback=self.palylistProgress)
             self.lcdNumber.display(current_videos_in_download)            
             current_videos_in_download+=1
