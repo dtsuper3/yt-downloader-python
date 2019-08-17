@@ -1080,6 +1080,7 @@ color: #F0F0F0;</string>
  </widget>
  <resources>
   <include location="photo.qrc"/>
+  <include location="../.designer/backup/photo.qrc"/>
  </resources>
  <connections/>
 </ui>
