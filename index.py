@@ -296,6 +296,8 @@ class MainApp(QMainWindow, ui):
         self.lineEdit_6.setText("")
         self.comboBox_2.clear()
         self.progressBar_3.setValue(0)
+        self.lcdNumber.display(0)
+        self.lcdNumber_2.display(0)
 
 
 def main():
